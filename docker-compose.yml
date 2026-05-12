@@ -1,0 +1,22 @@
+services:
+  postgres:
+    image: postgres:16
+    container_name: postgres_db
+    environment:
+      POSTGRES_USER: spark_user
+      POSTGRES_PASSWORD: spark_password
+      POSTGRES_DB: employee_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  spark-notebook:
+    image: quay.io/jupyter/pyspark-notebook:x86_64-spark-3.5.2
+    container_name: spark_jupyter
+    ports:
+      - "8888:8888"
+    environment:
+      JUPYTER_TOKEN: "spark"
+    volumes:
+      - .:/home/jovyan/work
